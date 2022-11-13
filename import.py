@@ -30,11 +30,14 @@ def generate_json_file(categorie, titre, url):
                               "titre": titre, "questions": []}
     out_questions_data = []
     response = requests.get(url)
-    data = json.loads(response.text)
-    all_quizz = data["quizz"]["fr"]
+    try:
+        data = json.loads(response.text)
+        all_quizz = data["quizz"]["fr"]
+    except:
+        print("erreur")
 
     for quizz_title, quizz_data in all_quizz.items():
-        out_filename = get_quizz_filename(categorie, titre, data["difficulté"])
+        out_filename = get_quizz_filename(categorie, titre, quizz_title)
         print(out_filename)
         out_questionnaire_data["difficulte"] = quizz_title
 
@@ -46,7 +49,6 @@ def generate_json_file(categorie, titre, url):
             for ch in question["propositions"]:
                 question_dict["choix"].append((ch, ch == question["réponse"]))
             out_questions_data.append(question_dict)
-
         out_questionnaire_data["questions"] = out_questions_data
         out_json = json.dumps(out_questionnaire_data)
 
@@ -56,5 +58,5 @@ def generate_json_file(categorie, titre, url):
         print("end")
 
 
-for i in range(len(open_quizz_db_data)):
-    generate_json_file(*open_quizz_db_data[i])
+for quizz_data_db in open_quizz_db_data:
+    generate_json_file(quizz_data_db[0], quizz_data_db[1], quizz_data_db[2])
