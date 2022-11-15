@@ -9,12 +9,14 @@ class Question:
         self.bonne_reponse = bonne_reponse
 
     def fromJsonData(data):
-        titre = data["titre"]
+        # Trasforme les données choix tuple (titre, bool "bonne réponse") -> (choix1, choix2...)
         choix = [i[0] for i in data["choix"]]
+        # Trouve le bon choix en fonction du bool "bonne réponse"
         bonne_reponse = [i[0] for i in data["choix"] if i[1] == True]
+        # si aucune bonne réponse où plusieurs -> Anomalie dans les données
         if len(bonne_reponse) != 1:
             return None
-        q = Question(titre, choix, bonne_reponse[0])
+        q = Question(data["titre"], choix, bonne_reponse[0])
         return q
 
     def poser(self, num_question, nb_question):
@@ -61,6 +63,8 @@ class Questionnaire:
         questionnaire_data_questions = data["questions"]
         questions = [Question.fromJsonData(i)
                      for i in questionnaire_data_questions]
+        # Supprime les questions None (qui n'ont pas pu être créer)
+        questions = [i for i in questions if i != None]
 
         return Questionnaire(questions, data["categorie"], data["titre"], data["difficulte"],)
 
