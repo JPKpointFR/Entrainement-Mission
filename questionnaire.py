@@ -1,24 +1,4 @@
 import json
-# PROJET QUESTIONNAIRE V3 : POO
-#
-# - Pratiquer sur la POO
-# - Travailler sur du code existant
-# - Mener un raisonnement
-#
-# -> Définir les entitées (données, actions)
-#
-# Question
-#    - titre       - str
-#    - choix       - (str)
-#    - bonne_reponse   - str
-#
-#    - poser()  -> bool
-#
-# Questionnaire
-#    - questions      - (Question)
-#
-#    - lancer()
-#
 
 
 class Question:
@@ -27,9 +7,13 @@ class Question:
         self.choix = choix
         self.bonne_reponse = bonne_reponse
 
-    def FromData(data):
-        # ....
-        q = Question(data[2], data[0], data[1])
+    def FromJsonData(data):
+        titre = data["titre"]
+        choix = [i[0] for i in data["choix"]]
+        bonne_reponse = [i[0] for i in data["choix"] if i[1] == True]
+        if len(bonne_reponse) != 1:
+            return None
+        q = Question(titre, choix, bonne_reponse[0])
         return q
 
     def poser(self):
@@ -53,7 +37,7 @@ class Question:
 
     def demander_reponse_numerique_utlisateur(min, max):
         reponse_str = input(
-            "Votre réponse (entre " + str(min) + " et " + str(max) + ") :")
+            "Votre réponse (entre " + str(min) + " et " + str(max) + ") : ")
         try:
             reponse_int = int(reponse_str)
             if min <= reponse_int <= max:
@@ -108,8 +92,10 @@ lancer_questionnaire(questionnaire)"""
 
 filename = "cinema_starwars_debutant.json"
 file = open(filename, "r")
-file.read(filename)
-json_data = file.close()
+json_data = file.read()
+file.close()
 questionnaire_data = json.loads(json_data)
 
-print()
+questionnaire_data_questions = questionnaire_data["questions"]
+q = Question.FromJsonData(questionnaire_data_questions[0])
+q.poser()
