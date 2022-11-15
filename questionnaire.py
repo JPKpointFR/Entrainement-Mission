@@ -19,6 +19,20 @@
 #    - lancer()
 #
 
+
+import requests
+import json
+import unicodedata
+
+# ====> REMARQUE : Les Url ci-dessous sont différentes que celles affichées dans la vidéo.
+# C'est normal, continuez bien avec les url de ce fichier
+
+
+def generate_json_file(jsonf):
+    data = json.loads(jsonf)
+    all_quizz = data["quizz"]["fr"]
+
+
 class Question:
     def __init__(self, titre, choix, bonne_reponse):
         self.titre = titre
@@ -38,18 +52,20 @@ class Question:
 
         print()
         resultat_response_correcte = False
-        reponse_int = Question.demander_reponse_numerique_utlisateur(1, len(self.choix))
+        reponse_int = Question.demander_reponse_numerique_utlisateur(
+            1, len(self.choix))
         if self.choix[reponse_int-1].lower() == self.bonne_reponse.lower():
             print("Bonne réponse")
             resultat_response_correcte = True
         else:
             print("Mauvaise réponse")
-            
+
         print()
         return resultat_response_correcte
 
     def demander_reponse_numerique_utlisateur(min, max):
-        reponse_str = input("Votre réponse (entre " + str(min) + " et " + str(max) + ") :")
+        reponse_str = input(
+            "Votre réponse (entre " + str(min) + " et " + str(max) + ") :")
         try:
             reponse_int = int(reponse_str)
             if min <= reponse_int <= max:
@@ -59,7 +75,8 @@ class Question:
         except:
             print("ERREUR : Veuillez rentrer uniquement des chiffres")
         return Question.demander_reponse_numerique_utlisateur(min, max)
-    
+
+
 class Questionnaire:
     def __init__(self, questions):
         self.questions = questions
@@ -73,27 +90,13 @@ class Questionnaire:
         return score
 
 
-"""questionnaire = (
-    ("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"), 
-    ("Quelle est la capitale de l'Italie ?", ("Rome", "Venise", "Pise", "Florence"), "Rome"),
-    ("Quelle est la capitale de la Belgique ?", ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
-                )
-
-lancer_questionnaire(questionnaire)"""
-
-# q1 = Question("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris")
-# q1.poser()
-
-# data = (("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris", "Quelle est la capitale de la France ?")
-# q = Question.FromData(data)
-# print(q.__dict__)
-
 Questionnaire(
     (
-    Question("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"), 
-    Question("Quelle est la capitale de l'Italie ?", ("Rome", "Venise", "Pise", "Florence"), "Rome"),
-    Question("Quelle est la capitale de la Belgique ?", ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
+        Question("Quelle est la capitale de la France ?",
+                 ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"),
+        Question("Quelle est la capitale de l'Italie ?",
+                 ("Rome", "Venise", "Pise", "Florence"), "Rome"),
+        Question("Quelle est la capitale de la Belgique ?",
+                 ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
     )
 ).lancer()
-
-
