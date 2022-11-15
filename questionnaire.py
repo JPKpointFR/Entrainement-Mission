@@ -1,3 +1,4 @@
+import json
 # PROJET QUESTIONNAIRE V3 : POO
 #
 # - Pratiquer sur la POO
@@ -18,19 +19,6 @@
 #
 #    - lancer()
 #
-
-
-import requests
-import json
-import unicodedata
-
-# ====> REMARQUE : Les Url ci-dessous sont différentes que celles affichées dans la vidéo.
-# C'est normal, continuez bien avec les url de ce fichier
-
-
-def generate_json_file(jsonf):
-    data = json.loads(jsonf)
-    all_quizz = data["quizz"]["fr"]
 
 
 class Question:
@@ -90,7 +78,22 @@ class Questionnaire:
         return score
 
 
-Questionnaire(
+"""questionnaire = (
+    ("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"), 
+    ("Quelle est la capitale de l'Italie ?", ("Rome", "Venise", "Pise", "Florence"), "Rome"),
+    ("Quelle est la capitale de la Belgique ?", ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
+                )
+
+lancer_questionnaire(questionnaire)"""
+
+# q1 = Question("Quelle est la capitale de la France ?", ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris")
+# q1.poser()
+
+# data = (("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris", "Quelle est la capitale de la France ?")
+# q = Question.FromData(data)
+# print(q.__dict__)
+
+"""Questionnaire(
     (
         Question("Quelle est la capitale de la France ?",
                  ("Marseille", "Nice", "Paris", "Nantes", "Lille"), "Paris"),
@@ -99,4 +102,14 @@ Questionnaire(
         Question("Quelle est la capitale de la Belgique ?",
                  ("Anvers", "Bruxelles", "Bruges", "Liège"), "Bruxelles")
     )
-).lancer()
+).lancer()"""
+
+# Charger un fichier JSON
+
+filename = "cinema_starwars_debutant.json"
+file = open(filename, "r")
+file.read(filename)
+json_data = file.close()
+questionnaire_data = json.loads(json_data)
+
+print()

@@ -61,4 +61,5 @@ def generate_json_file(categorie, titre, url):
 
 
 for quizz_data in open_quizz_db_data:
-    generate_json_file(quizz_data[0], quizz_data[1], quizz_data[2])
+    questionnaire = {generate_json_file(
+        quizz_data[0], quizz_data[1], quizz_data[2])}
